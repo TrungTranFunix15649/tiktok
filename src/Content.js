@@ -10,31 +10,50 @@ import { useEffect , useState} from "react"
 // 1. All cases, callback luon duoc goi sau khi component mounted
 // 2. Cleanup duoc goi truoc khi component unmounted
 // 3. Cleanup fuc luon duoc goi truoc khi callback duoc goi (tru lan mounted)
-
-
-function Content () {
-    const [avatar, setAvatar] = useState()
-    useEffect(()=>{
-        // Clean up
-        return () =>{
-            avatar && URL.revokeObjectURL(avatar.preview)}
-    }, [avatar])
-    const handlePreviewAvatar = (e)=> {
-        const file = e.target.files[0]
-        file.preview = URL.createObjectURL(file)
-        setAvatar(file)
+const lessons = [
+    {
+        id:1,
+        name: 'React la gi'
+    },
+    { 
+        id:2,
+        name: 'SPA/MPA'
+    },
+    {
+        id:3,
+        name: 'Arrorw function'
 
     }
-  
+]
+
+function Content () {
+    const [lessonId, setLessionId] = useState(1)
+    useEffect(() => {
+        const handleComment = ({detail}) => {
+            console.log(detail)
+        }
+        window.addEventListener(`lesson-${lessonId}`, handleComment)
+        return () => {
+            window.removeEventListener(`lesson-${lessonId}`,handleComment)
+        }
+    }, [lessonId])
     return (
         <div>
-            <input
-                type='file'
-                onChange={handlePreviewAvatar}
-                />
-            {avatar && (
-                <img src={avatar.preview} alt='' width="80%"/>
-            )}
+            <ul>
+                {lessons.map(lesson =>(
+                    <li
+                        key={lesson.id}
+                        style={{
+                            color:lessonId === lesson.id?
+                                'red':
+                                '#333'
+                        }}
+                        onClick={() =>{setLessionId(lesson.id)}}
+                    >
+                        {lesson.name}
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 }
