@@ -7,41 +7,34 @@ import { useEffect , useState} from "react"
 // - Chi goi callback mot lan sau khi component mounted
 // 3. useEffect(callback,[dep]
 // - Callback se duoc goi lai moi khi dependency thay doi
-// All cases, callback luon duoc goi sau khi component mounted
-const  tabs = ['posts', 'comments','albums',]
+// 1. All cases, callback luon duoc goi sau khi component mounted
+// 2. Cleanup duoc goi truoc khi component unmounted
+// 3. Cleanup fuc luon duoc goi truoc khi callback duoc goi (tru lan mounted)
+
 
 function Content () {
-    const [title, setTitle] = useState('')
-    const [posts, setPosts] = useState([])
-    const [type, setType] = useState('posts')
-    useEffect(() => {
-        
-        fetch(`https://jsonplaceholder.typicode.com/${type}`)
-        .then(res => res.json())
-        .then(posts => {
-            setPosts(posts)
-        })
-    },[type])
+    const [avatar, setAvatar] = useState()
+    useEffect(()=>{
+        // Clean up
+        return () =>{
+            avatar && URL.revokeObjectURL(avatar.preview)}
+    }, [avatar])
+    const handlePreviewAvatar = (e)=> {
+        const file = e.target.files[0]
+        file.preview = URL.createObjectURL(file)
+        setAvatar(file)
+
+    }
+  
     return (
         <div>
-            {tabs.map(tab=>(
-                <button 
-                    key={tab}
-                    style={type===tab? {
-                        color: '#fff',
-                        backgroundColor:'#333'
-                    }: {}}
-                    onClick={()=>setType(tab)}>{tab}</button>
-            ))}
-            <input 
-                value ={title}
-                onChange ={e=>setTitle(e.target.value)}
-            />
-            <ul>
-                {posts.map(post => (
-                    <li key={post.id}>{post.title || post.name}</li>
-                ))}
-            </ul>
+            <input
+                type='file'
+                onChange={handlePreviewAvatar}
+                />
+            {avatar && (
+                <img src={avatar.preview} alt='' width="80%"/>
+            )}
         </div>
     )
 }
