@@ -1,4 +1,4 @@
-import { useEffect , useState} from "react"
+import { useRef , useState} from "react"
 
 // 1. useEffect(callback)
 // - Goi callbakc moi khi component render
@@ -10,50 +10,29 @@ import { useEffect , useState} from "react"
 // 1. All cases, callback luon duoc goi sau khi component mounted
 // 2. Cleanup duoc goi truoc khi component unmounted
 // 3. Cleanup fuc luon duoc goi truoc khi callback duoc goi (tru lan mounted)
-const lessons = [
-    {
-        id:1,
-        name: 'React la gi'
-    },
-    { 
-        id:2,
-        name: 'SPA/MPA'
-    },
-    {
-        id:3,
-        name: 'Arrorw function'
 
-    }
-]
 
 function Content () {
-    const [lessonId, setLessionId] = useState(1)
-    useEffect(() => {
-        const handleComment = ({detail}) => {
-            console.log(detail)
-        }
-        window.addEventListener(`lesson-${lessonId}`, handleComment)
-        return () => {
-            window.removeEventListener(`lesson-${lessonId}`,handleComment)
-        }
-    }, [lessonId])
+    const [count, setCount] = useState(60)
+
+    let timerId  = useRef()
+
+    const handleStart = () => {
+        timerId.current = setInterval(() =>{
+            setCount(preCount => preCount = count-1)
+        },1000)
+        console.log('start->', timerId.current)
+    }
+
+    const handleStop = () => {
+        clearInterval(timerId.current)
+        console.log('stop->', timerId.current)
+    }
     return (
-        <div>
-            <ul>
-                {lessons.map(lesson =>(
-                    <li
-                        key={lesson.id}
-                        style={{
-                            color:lessonId === lesson.id?
-                                'red':
-                                '#333'
-                        }}
-                        onClick={() =>{setLessionId(lesson.id)}}
-                    >
-                        {lesson.name}
-                    </li>
-                ))}
-            </ul>
+        <div style={{padding:20}}>
+            <h1>{count}</h1>
+            <button onClick={handleStart}>Start</button>
+            <button onClick ={handleStop}>Stop</button>
         </div>
     )
 }
