@@ -5,8 +5,10 @@ import { faCircleXmark, faSpinner, faMagnifyingGlass } from '@fortawesome/free-s
 import Tippy from '@tippyjs/react/headless';
 
 import { Wrapper as PopperWrapper } from '~/components/Popper';
+
 import styles from './Header.module.scss';
 import images from '~/assets/images';
+import AccountItem from '~/components/AccountItem';
 
 const cx = classNames.bind(styles);
 
@@ -15,7 +17,7 @@ function Header() {
 
     useEffect(() => {
         setTimeout(() => {
-            setSearchResult([1, 2, 3]);
+            setSearchResult([]);
         }, 0);
     });
     return (
@@ -28,11 +30,15 @@ function Header() {
                     interactive
                     visible={searchResult.length > 0}
                     render={(attrs) => (
-                        <PopperWrapper>
-                            <div className={cx('search-results')} tabIndex="-1" {...attrs}>
-                                Ket qua
-                            </div>
-                        </PopperWrapper>
+                        <div className={cx('search-result')} tabIndex="-1" {...attrs}>
+                            <PopperWrapper>
+                                <h4 className={cx('search-title')}>Accounts</h4>
+                                <AccountItem />
+                                <AccountItem />
+                                <AccountItem />
+                                <AccountItem />
+                            </PopperWrapper>
+                        </div>
                     )}
                 >
                     <div className={cx('search')}>
