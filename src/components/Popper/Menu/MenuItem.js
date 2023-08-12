@@ -4,9 +4,9 @@ import styles from './Menu.module.scss';
 
 const cx = classNames.bind(styles);
 
-function MenuItem({ data }) {
+function MenuItem({ data, onClick }) {
     return data.map((list, index) => (
-        <Button className={cx('menu-item')} leftIcon={list.icon} to={list.to}>
+        <Button className={cx('menu-item')} leftIcon={list.icon} to={list.to} onClick={onClick}>
             {list.title}
         </Button>
     ));
