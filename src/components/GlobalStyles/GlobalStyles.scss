@@ -41,3 +41,23 @@ a[href] {
     color: var(--text-color);
     text-decoration: none;
 }
+
+// Custom tippy
+body {
+    .tippy-box {
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 1.6rem;
+        line-height: 2.2rem;
+        background-color: rgba(84, 84, 84, 0.92);
+    }
+
+    .tippy-arrow {
+        top: -8px;
+        background-color: rgba(84, 84, 84, 0.92);
+        color: rgba(84, 84, 84, 0.92);
+    }
+    .tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
+        top: -8px;
+    }
+}
